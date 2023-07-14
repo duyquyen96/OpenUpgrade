@@ -22,6 +22,9 @@ renamed_modules = {
     "mass_editing": "server_action_mass_edit",
     # OCA/...
     # Viindoo/tvtmaaddons
+    "to_hr_contract_actions": "viin_hr_contract",
+    "to_hr_skills_recruitment": "viin_hr_recruitment_skills_resume",
+    "to_uom_mail_thread": "viin_mail_thread_uom",
     "viin_webp": "viin_web_editor",
     # Viindoo/enterprise
     # Viindoo/odoo-tvtma
@@ -60,12 +63,20 @@ merged_modules = {
     # OCA/purchase-workflow
     "product_form_purchase_link": "purchase",
     # Viindoo/tvtmaaddons
+    "payment_zalopay_merchant_code": "payment_zalopay",
+    "payment_zalopay_atm": "payment_zalopay",
+    "payment_zalopay_international_card": "payment_zalopay",
+    "to_partner_check_unique_vat": "viin_partner_tax_code",
+    "to_partner_tax_code": "viin_partner_tax_code",
     "to_project_access": "viin_project",
     "to_project_stages": "viin_project",
+    "viin_hr_holidays_accrual_plan": "viin_hr_holidays",
+    "viin_hr_employee_resource_calendar": "viin_hr_contract",
     "viin_project_kanban_state_notification": "viin_project",
     "viin_project_update": "viin_project",
     "viin_website_image_optimization_disable": "viin_webp",
     # Viindoo/enterprise
+    "viin_website_seo_advisor_patch1": "viin_website_seo_advisor",
     # Viindoo/odoo-tvtma
 }
 
