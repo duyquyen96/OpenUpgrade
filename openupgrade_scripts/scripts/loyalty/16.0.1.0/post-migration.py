@@ -1,77 +1,57 @@
+# Copyright 2023 Tecnativa - Pilar Vargas
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 from openupgradelib import openupgrade
 
+from odoo.tools.translate import _
 
-def _move_gift_cart_to_loyalty_card(env):
-    if not openupgrade.table_exists(env.cr, "gift_card"):
-        # Need to make sure gift_card module
-        # has been installed in v15
-        return
-    openupgrade.logged_query(
-        env.cr,
-        """
-        ALTER TABLE loyalty_card
-            ADD COLUMN IF NOT EXISTS old_gift_card_id INTEGER
-        """,
+_deleted_xml_records = [
+    "loyalty.sale_coupon_generate_rule",
+]
+
+
+def convert_loyalty_program_rewards(env):
+    openupgrade.m2o_to_x2m(
+        env.cr, env["loyalty.program"], "loyalty_program", "reward_ids", "reward_id"
     )
-    openupgrade.logged_query(
-        env.cr,
-        """
-        WITH inserted_loyalty_program AS (
-            INSERT INTO loyalty_program (
-                company_id,
-                currency_id,
-                name,
-                active,
-                program_type,
-                applies_on,
-                trigger,
-                portal_visible
+
+
+def convert_loyalty_program_rules(env):
+    openupgrade.m2o_to_x2m(
+        env.cr, env["loyalty.program"], "loyalty_program", "rule_ids", "rule_id"
+    )
+
+
+def compute_portal_point_name(env):
+    """This is a computed field, but the _program_type_default_values method of the
+    loyalty module sets the following values in portal_point_name depending on the
+    program_type field. This is done in post so that the language context can be used."""
+    portal_point_names = {
+        "coupons": _("Coupon point(s)"),
+        "promotion": _("Promo point(s)"),
+        "gift_card": _("Gift Card"),
+        "loyalty": _("Loyalty point(s)"),
+        "ewallet": _("eWallet"),
+        "promo_code": _("Discount point(s)"),
+        "buy_x_get_y": _("Credit(s)"),
+        "next_order_coupons": _("Coupon point(s)"),
+    }
+    loyalty_programs = env["loyalty.program"].search([])
+    for program in loyalty_programs:
+        if program.program_type in portal_point_names:
+            translated_name = portal_point_names[program.program_type]
+            # By default when the module is installed it contains the terms in the
+            # language code "en_US".
+            program.with_context(lang="en_US").write(
+                {"portal_point_name": translated_name}
             )
-            SELECT
-                DISTINCT(card.company_id),
-                company.currency_id,
-                jsonb_object_agg('en_US', 'Gift Cards'),
-                true,
-                'gift_card',
-                'future',
-                'auto',
-                true
-            FROM gift_card card
-            JOIN res_company company ON company.id = card.company_id
-            GROUP BY card.company_id, company.currency_id
-            RETURNING id, company_id
-        )
-        INSERT INTO loyalty_card (
-            old_gift_card_id,
-            program_id,
-            company_id,
-            partner_id,
-            code,
-            expiration_date,
-            points,
-            create_uid,
-            create_date,
-            write_uid,
-            write_date
-        )
-        SELECT
-            card.id,
-            program.id,
-            card.company_id,
-            card.partner_id,
-            card.code,
-            card.expired_date,
-            card.initial_amount,
-            card.create_uid,
-            card.create_date,
-            card.write_uid,
-            card.write_date
-        FROM gift_card card
-        JOIN inserted_loyalty_program program ON program.company_id = card.company_id
-        """,
-    )
 
 
 @openupgrade.migrate()
 def migrate(env, version):
-    _move_gift_cart_to_loyalty_card(env)
+    convert_loyalty_program_rewards(env)
+    convert_loyalty_program_rules(env)
+    compute_portal_point_name(env)
+    openupgrade.delete_records_safely_by_xml_id(
+        env,
+        _deleted_xml_records,
+    )

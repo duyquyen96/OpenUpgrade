@@ -3,4 +3,3 @@
 ---XML records in module 'event_booth'---
 NEW ir.ui.view: event_booth.event_booth_view_graph
 NEW ir.ui.view: event_booth.event_booth_view_pivot
-# NOTHING TODO

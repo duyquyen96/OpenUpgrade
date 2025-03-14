@@ -78,6 +78,98 @@ def login_or_registration_required_at_checkout(cr):
         )
 
 
+def update_translatable_fields(cr):
+    # Edgy case for DBs with long history as well, where we could have a situation where:
+    # - The source term is a languange different from 'en_US'
+    # - That language term is blank
+    # The result is that the resultant json won't take the term for that language and
+    # it will appear with the value given to 'en_US' (as it's the default one)
+    openupgrade.logged_query(
+        cr,
+        """
+            UPDATE ir_translation
+            SET state = 'translated', value = src
+            WHERE type = 'model'
+                AND src != ''
+                AND value = ''
+                AND value IS DISTINCT FROM src
+        """,
+    )
+    # Fix terms with wrong to_translate state. DBs with long version history could have
+    # terms that didn't have the right state and those would be ignored
+    openupgrade.logged_query(
+        cr,
+        """
+            UPDATE ir_translation set state = 'translated'
+            WHERE type = 'model'
+                AND state = 'to_translate'
+                AND value is NOT NULL
+                AND value IS DISTINCT FROM src
+        """,
+    )
+    # exclude fields from translation update
+    exclusions = {
+        # ir.actions.* inherits the name and help columns from ir.actions.actions
+        "ir.actions.act_window": ["name", "help"],
+        "ir.actions.act_url": ["name", "help"],
+        "ir.actions.server": ["name", "help"],
+        "ir.actions.client": ["name", "help"],
+        "ir.actions.report": ["name", "help"],
+    }
+    cr.execute(
+        "SELECT f.name, m.model FROM ir_model_fields f "
+        "JOIN ir_model m ON f.model_id=m.id WHERE f.translate"
+    )
+    for field, model in cr.fetchall():
+        if field in exclusions.get(model, []):
+            continue
+        table = openupgrade.get_model2table(model)
+        if not openupgrade.table_exists(cr, table):
+            _logger.warning(
+                "Couldn't find table for model %s - not updating translations", model
+            )
+            continue
+        columns = tools.sql.table_columns(cr, table)
+        if field in columns:
+            if columns[field]["udt_name"] in ["varchar", "text"]:
+                tools.sql.convert_column_translatable(cr, table, field, "jsonb")
+        else:
+            _logger.warning(
+                "Couldn't find column for field %s - not updating translations", field
+            )
+            continue
+        # borrowed from odoo/tools/translate.py#_get_translation_upgrade_queries
+        translation_name = f"{model},{field}"
+        emtpy_src = """'{"en_US": ""}'::jsonb"""
+        openupgrade.logged_query(
+            cr,
+            f"""
+            WITH t AS (
+                SELECT it.res_id as res_id, jsonb_object_agg(it.lang, it.value) AS value,
+                    bool_or(imd.noupdate) AS noupdate
+                FROM ir_translation it
+                LEFT JOIN ir_model_data imd ON imd.model = %(model)s AND imd.res_id = it.res_id
+                WHERE it.type = 'model'
+                    AND it.name = %(name)s
+                    AND it.state = 'translated'
+                    AND COALESCE(it.value, '') != ''
+                GROUP BY it.res_id
+            )
+            UPDATE {table} m
+            SET "{field}" = CASE
+                WHEN m."{field}" IS NULL THEN {emtpy_src} || t.value
+                WHEN t.noupdate IS FALSE THEN t.value || m."{field}"
+                ELSE m."{field}" || t.value END
+            FROM t
+            WHERE t.res_id = m.id
+            """,
+            {
+                "model": model,
+                "name": translation_name,
+            },
+        )
+
+
 @openupgrade.migrate(use_env=False)
 def migrate(cr, version):
     """

@@ -8,6 +8,7 @@ renamed_modules = {
     "coupon": "loyalty",
     "payment_test": "payment_demo",
     "payment_transfer": "payment_custom",
+    "pos_sale_gift_card": "pos_sale_loyalty",
     "sale_coupon": "sale_loyalty",
     "sale_coupon_delivery": "sale_loyalty_delivery",
     "website_sale_coupon": "website_sale_loyalty",
@@ -29,6 +30,8 @@ renamed_modules = {
     "crm_project": "crm_lead_to_task",
     # OCA/knowledge
     "knowledge": "document_knowledge",
+    # OCA/multi-company
+    "res_partner_category_multi_company": "partner_category_multi_company",
     # OCA/project
     "project_stage_mgmt": "project_task_stage_mgmt",
     # OCA/sale-promotion
@@ -49,6 +52,8 @@ renamed_modules = {
     # OCA/server-ux
     "mass_editing": "server_action_mass_edit",
     # OCA/l10n-italy
+    "assets_management": "l10n_it_asset_management",
+    "l10n_it_account_balance_eu": "l10n_it_financial_statement_eu",
     "l10n_it_ricevute_bancarie": "l10n_it_riba",
     # OCA/...
     # Viindoo/tvtmaaddons
@@ -103,6 +108,7 @@ merged_modules = {
     "pos_coupon": "pos_loyalty",
     "pos_gift_card": "pos_loyalty",
     "project_account": "project",
+    "purchase_requisition_stock_dropshipping": "purchase_requisition_stock",
     "sale_gift_card": "sale_loyalty",
     "sale_project_account": "sale_project",
     "website_sale_delivery_giftcard": "website_sale_loyalty_delivery",
@@ -116,6 +122,11 @@ merged_modules = {
     "account_invoice_report_due_list": "account",
     # OCA/e-commerce
     "website_sale_require_login": "website_sale",
+    # OCA/l10n-spain
+    "l10n_es_irnr": "l10n_es",
+    "l10n_es_irnr_sii": "l10n_es_aeat_sii_oca",
+    # OCA/partner-contact
+    "partner_company_group": "base_partner_company_group",
     # OCA/pos
     "pos_margin_account_invoice_margin": "point_of_sale",
     "pos_order_line_no_unlink": "point_of_sale",
@@ -126,6 +137,8 @@ merged_modules = {
     "project_task_milestone": "project",
     # OCA/purchase-workflow
     "product_form_purchase_link": "purchase",
+    "purchase_order_line_price_history": "purchase",
+    "purchase_picking_state": "purchase_stock",
     # OCA/sale-promotion
     "coupon_commercial_partner_applicability": "loyalty_partner_applicability",
     "sale_coupon_selection_wizard": "sale_loyalty_order_suggestion",
@@ -208,6 +221,8 @@ merged_modules = {
     "viin_brand_web": "viin_brand_common",
     "viin_brand_web_editor": "web_editor",
     "viin_brand_website_blog": "website_blog",
+    # OCA/...
+    "web_tree_image_tooltip": "web",
 }
 
 # only used here for upgrade_analysis
