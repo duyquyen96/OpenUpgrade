@@ -2,4 +2,4 @@
 ---Fields in module 'hr_skills_survey'---
 ---XML records in module 'hr_skills_survey'---
 DEL ir.ui.view: hr_skills_survey.assets_backend
-# NOTHING TO DO: handled by ORM
+# NOTHING TO DO: noupdate="0" record

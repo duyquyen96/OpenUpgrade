@@ -2,12 +2,13 @@
 new model crm.lead.pls.update [transient]
 ---Fields in module 'crm'---
 crm          / crm.lead                 / calendar_event_ids (one2many) : NEW relation: calendar.event
-crm          / crm.lead                 / company_id (many2one)         : now a function
+crm          / crm.lead                 / company_currency (many2one)   : not related anymore
+crm          / crm.lead                 / company_currency (many2one)   : now a function
 crm          / crm.lead                 / description (text)            : type is now 'html' ('text')
 crm          / crm.team                 / assignment_domain (char)      : NEW
 crm          / crm.team                 / assignment_optout (boolean)   : NEW
 crm          / crm.team.member          / assignment_domain (char)      : NEW
-crm          / crm.team.member          / assignment_max (integer)      : NEW hasdefault
+crm          / crm.team.member          / assignment_max (integer)      : NEW hasdefault: default
 crm          / crm.team.member          / assignment_optout (boolean)   : NEW
 crm          / res.partner              / meeting_count (integer)       : module is now 'calendar' ('crm')
 crm          / res.partner              / meeting_ids (many2many)       : module is now 'calendar' ('crm')
@@ -31,8 +32,6 @@ NEW ir.actions.server: crm.action_opportunity_forecast
 NEW ir.cron: crm.ir_cron_crm_lead_assign (noupdate)
 NEW ir.model.access: crm.crm_lead_pls_update_access_system
 DEL ir.model.access: crm.access_crm_lead_partner_manager
-DEL ir.model.constraint: crm.constraint_crm_lead_check_probability
-DEL ir.model.constraint: crm.constraint_crm_recurring_plan_check_number_of_months
 NEW ir.ui.menu: crm.crm_menu_forecast
 NEW ir.ui.menu: crm.crm_team_member_config
 NEW ir.ui.view: crm.crm_action_helper

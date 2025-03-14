@@ -44,4 +44,3 @@ DEL ir.ui.menu: hr_timesheet.hr_timesheet_config_settings_menu_action
 DEL ir.ui.view: hr_timesheet.assets_backend
 DEL ir.ui.view: hr_timesheet.portal_subtask_timesheet_tables
 # NOTHING TO DO: Delete records with no correspondence
-

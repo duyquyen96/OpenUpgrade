@@ -4,6 +4,8 @@ new model crm.lead.pls.update [transient]
 
 ---Fields in module 'crm'---
 crm          / crm.lead                 / calendar_event_ids (one2many) : NEW relation: calendar.event
+crm          / crm.lead                 / company_currency (many2one)   : not related anymore
+crm          / crm.lead                 / company_currency (many2one)   : now a function
 crm          / crm.lead                 / company_id (many2one)         : now a function
 # NOTHING TO DO: Handle by ORM
 
@@ -64,5 +66,7 @@ DEL ir.ui.view: crm.qunit_suite
 # NOTHING TO DO
 
 DEL mail.alias: crm.mail_alias_lead_info (noupdate)
+# DONE: post-migration: deleted ir_model_data
+
 DEL mail.template: crm.email_template_opportunity_mail (noupdate)
 # DONE: post-migration: safely deleted xmlids

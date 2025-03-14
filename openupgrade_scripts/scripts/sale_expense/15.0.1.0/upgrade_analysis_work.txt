@@ -3,4 +3,4 @@
 ---XML records in module 'sale_expense'---
 DEL ir.ui.view: sale_expense.assets_backend
 DEL ir.ui.view: sale_expense.qunit_suite
-# NOTHING TO DO: handled by ORM
+# NOTHING TO DO

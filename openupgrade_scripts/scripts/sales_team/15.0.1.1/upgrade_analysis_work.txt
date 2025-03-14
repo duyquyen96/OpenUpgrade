@@ -1,6 +1,9 @@
 ---Models in module 'sales_team'---
 new model crm.team.member
 ---Fields in module 'sales_team'---
+sales_team   / crm.team                 / _order                        : _order is now 'sequence ASC, create_date DESC, id DESC' ('sequence')
+# NOTHING TO DO
+
 sales_team   / crm.team                 / crm_team_member_all_ids (one2many): NEW relation: crm.team.member
 sales_team   / crm.team                 / crm_team_member_ids (one2many): NEW relation: crm.team.member
 # NOTHING TO DO: relation to crm.team.member
@@ -32,7 +35,6 @@ DEL ir.actions.act_window: sales_team.sales_team_config_action
 NEW ir.model.access: sales_team.access_crm_team_member_all
 NEW ir.model.access: sales_team.access_crm_team_member_manager
 NEW ir.model.access: sales_team.access_crm_team_member_user
-DEL ir.model.constraint: sales_team.constraint_crm_tag_name_uniq
 NEW ir.ui.view: sales_team.crm_team_member_view_form
 NEW ir.ui.view: sales_team.crm_team_member_view_form_from_team
 NEW ir.ui.view: sales_team.crm_team_member_view_kanban

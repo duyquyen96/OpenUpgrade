@@ -9,3 +9,6 @@ def migrate(env, version):
             ("sale_stock.group_lot_on_invoice", "stock_account.group_lot_on_invoice"),
         ],
     )
+    openupgrade.set_xml_ids_noupdate_value(
+        env, "stock_account", ["group_lot_on_invoice"], True
+    )

@@ -4,4 +4,4 @@
 NEW ir.ui.view: website_sale_delivery.payment_delivery_shipping_method
 DEL ir.ui.view: website_sale_delivery.assets_frontend
 DEL ir.ui.view: website_sale_delivery.assets_tests
-# NOTHING TO DO: noupdate="0" records
+# NOTHING TO DO: Manage by ORM

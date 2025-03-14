@@ -2,4 +2,4 @@
 ---Fields in module 'pos_epson_printer'---
 ---XML records in module 'pos_epson_printer'---
 DEL ir.ui.view: pos_epson_printer.assets
-# NOTHING TO DO: handled by ORM
+# NOTHING TO DO: noupdate=0 ir stuff

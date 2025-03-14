@@ -922,6 +922,37 @@ NEW account.account.template: l10n_se.a8980
 DEL account.account.template: l10n_se.a7520
 NEW account.chart.template: l10n_se.l10nse_chart_template_K2
 NEW account.chart.template: l10n_se.l10nse_chart_template_K3
+account.tax.template: l10n_se.purchase_construction_services_tax_12_EC (noupdate switched)
+account.tax.template: l10n_se.purchase_construction_services_tax_25_EC (noupdate switched)
+account.tax.template: l10n_se.purchase_construction_services_tax_6_EC (noupdate switched)
+account.tax.template: l10n_se.purchase_goods_tax_12_EC (noupdate switched)
+account.tax.template: l10n_se.purchase_goods_tax_12_NEC (noupdate switched)
+account.tax.template: l10n_se.purchase_goods_tax_25_EC (noupdate switched)
+account.tax.template: l10n_se.purchase_goods_tax_25_NEC (noupdate switched)
+account.tax.template: l10n_se.purchase_goods_tax_6_EC (noupdate switched)
+account.tax.template: l10n_se.purchase_goods_tax_6_NEC (noupdate switched)
+account.tax.template: l10n_se.purchase_services_tax_12_EC (noupdate switched)
+account.tax.template: l10n_se.purchase_services_tax_12_NEC (noupdate switched)
+account.tax.template: l10n_se.purchase_services_tax_25_EC (noupdate switched)
+account.tax.template: l10n_se.purchase_services_tax_25_NEC (noupdate switched)
+account.tax.template: l10n_se.purchase_services_tax_6_EC (noupdate switched)
+account.tax.template: l10n_se.purchase_services_tax_6_NEC (noupdate switched)
+account.tax.template: l10n_se.purchase_tax_12_goods (noupdate switched)
+account.tax.template: l10n_se.purchase_tax_12_services (noupdate switched)
+account.tax.template: l10n_se.purchase_tax_25_goods (noupdate switched)
+account.tax.template: l10n_se.purchase_tax_25_services (noupdate switched)
+account.tax.template: l10n_se.purchase_tax_6_goods (noupdate switched)
+account.tax.template: l10n_se.purchase_tax_6_services (noupdate switched)
+account.tax.template: l10n_se.sale_tax_12_goods (noupdate switched)
+account.tax.template: l10n_se.sale_tax_12_services (noupdate switched)
+account.tax.template: l10n_se.sale_tax_25_goods (noupdate switched)
+account.tax.template: l10n_se.sale_tax_25_services (noupdate switched)
+account.tax.template: l10n_se.sale_tax_6_goods (noupdate switched)
+account.tax.template: l10n_se.sale_tax_6_services (noupdate switched)
+account.tax.template: l10n_se.sale_tax_goods_EC (noupdate switched)
+account.tax.template: l10n_se.sale_tax_goods_NEC (noupdate switched)
+account.tax.template: l10n_se.sale_tax_services_EC (noupdate switched)
+account.tax.template: l10n_se.sale_tax_services_NEC (noupdate switched)
 NEW account.tax.template: l10n_se.triangular_tax_0_goods
 NEW account.tax.template: l10n_se.triangular_tax_12_goods
 NEW account.tax.template: l10n_se.triangular_tax_25_goods
