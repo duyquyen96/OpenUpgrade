@@ -157,5 +157,3 @@ def migrate(env, version):
     fill_master_department_id(env.cr)
     create_work_contact(env)
     openupgrade.load_data(env.cr, "hr", "16.0.1.1/noupdate_changes.xml")
-    _m2m_to_o2m_plan_activity_type_ids(env)
-    fill_master_department_id(env.cr)
