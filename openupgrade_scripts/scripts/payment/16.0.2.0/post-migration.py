@@ -1,15 +1,10 @@
 from openupgradelib import openupgrade
 
 
-def fill_payment_provider_is_published(env):
-    openupgrade.logged_query(
-        env.cr,
-        """
-        UPDATE payment_provider
-            SET is_published = True
-        WHERE state IN ('enabled', 'test')
-        """,
-    )
+def _set_published_state(env):
+    """Set published state according to the provider state as that will keep the former
+    visibility state"""
+    env["payment.provider"].search([("state", "=", "enabled")]).is_published = True
 
 
 @openupgrade.migrate()
@@ -25,4 +20,4 @@ def migrate(env, version):
             "payment.payment_acquirer_test",
         ],
     )
-    fill_payment_provider_is_published(env)
+    _set_published_state(env)

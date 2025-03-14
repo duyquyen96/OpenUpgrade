@@ -14,7 +14,7 @@
             </field>
   </record>
   <record id="ir_rule_mail_channel_member_group_user" model="ir.rule">
-    <field name="name">mail.channel.member: write its own entries</field>
+    <!-- manually added due to xmlid rename -->
     <field name="domain_force">[
         '|',
             '&amp;',

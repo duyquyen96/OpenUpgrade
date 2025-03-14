@@ -144,6 +144,18 @@ def _hr_plan_activity_type_fast_fill_company_id(env):
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.rename_xmlids(env.cr, _xmlid_renames)
-    _hr_employee_fast_fill_work_contact_info(env)
-    _hr_plan_fast_fill_company_id(env)
-    _hr_plan_activity_type_fast_fill_company_id(env)
+    openupgrade.add_fields(env, _new_fields)
+    # Backup Many2many relation between hr.plan and hr.plan.activity.type
+    openupgrade.remove_tables_fks(env.cr, ["hr_plan_hr_plan_activity_type_rel"])
+    # get_legacy_name cannot be used here, as there is a length limit in table name,
+    # and it causes a conflict. Waiting for a fix in
+    # openupgradelib, we will use a new table name here.
+    openupgrade.rename_tables(
+        env.cr,
+        [
+            (
+                "hr_plan_hr_plan_activity_type_rel",
+                "ou_legacy_16_0_hr_plan_hr_plan_activity_type_rel",
+            )
+        ],
+    )
