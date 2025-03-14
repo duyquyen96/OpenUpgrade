@@ -1,6 +1,6 @@
 ---Models in module 'calendar'---
-obsolete model calendar.contacts
-new model calendar.filters
+obsolete model calendar.contacts (renamed to calendar.filters)
+new model calendar.filters (renamed from calendar.contacts)
 # DONE: pre-migration: renamed model 'calendar.contacts' to 'calendar.filters', renamed table 'calendar_contacts' to 'calendar_filters'
 
 ---Fields in module 'calendar'---
@@ -11,14 +11,8 @@ calendar     / calendar.alarm           / mail_template_id (many2one)   : NEW re
 calendar     / calendar.attendee        / _order                        : _order is now 'create_date ASC' ('id')
 # NOTHING TO DO
 
-calendar     / calendar.contacts        / active (boolean)              : DEL
-calendar     / calendar.contacts        / partner_id (many2one)         : DEL relation: res.partner, required
-calendar     / calendar.contacts        / user_id (many2one)            : DEL relation: res.users, required, req_default: function
-# DONE: pre-migration: renamed model 'calendar.contacts' to 'calendar.filters', renamed table 'calendar_contacts' to 'calendar_filters'
-
 calendar     / calendar.event           / description (text)            : type is now 'html' ('text')
 # DONE: pre-migration: convert text to html
-
 
 calendar     / calendar.event           / videocall_location (char)     : NEW
 # NOTHING TO DO: new feature
@@ -29,14 +23,8 @@ calendar     / calendar.event           / weekday (selection)           : select
 calendar     / calendar.event.type      / color (integer)               : NEW hasdefault
 # NOTHING TO DO: new feature
 
-calendar     / calendar.filters         / active (boolean)              : NEW hasdefault
-calendar     / calendar.filters         / partner_id (many2one)         : NEW relation: res.partner, required
-calendar     / calendar.filters         / user_id (many2one)            : NEW relation: res.users, required, req_default: function, hasdefault
-# DONE: pre-migration: renamed model 'calendar.contacts' to 'calendar.filters', renamed table 'calendar_contacts' to 'calendar_filters'
-
 calendar     / calendar.filters         / partner_checked (boolean)     : NEW hasdefault
-# DONE: pre-migration: create column column with type bool and set the default value 'True'
-
+# DONE: pre-migration: create column with type bool and set the default value 'True'
 
 calendar     / calendar.recurrence      / fr (boolean)                  : DEL
 calendar     / calendar.recurrence      / fri (boolean)                 : NEW
@@ -64,16 +52,14 @@ calendar     / res.partner              / meeting_count (integer)       : previo
 calendar     / res.partner              / meeting_ids (many2many)       : previously in module crm
 calendar     / res.users                / meeting_count (integer)       : previously in module crm
 calendar     / res.users                / meeting_ids (many2many)       : previously in module crm
-# NOTHING TO DO: Handled by ORM when crm was installed
+# NOTHING TO DO: Handled by ORM when crm is installed
 
 ---XML records in module 'calendar'---
 NEW ir.model.access: calendar.access_calendar_filters
 NEW ir.model.access: calendar.access_calendar_filters_all
 DEL ir.model.access: calendar.access_calendar_contacts
 DEL ir.model.access: calendar.access_calendar_contacts_all
-DEL ir.model.constraint: calendar.constraint_calendar_contacts_user_id_partner_id_unique
-DEL ir.model.constraint: calendar.constraint_calendar_event_type_name_uniq
-DEL ir.model.constraint: calendar.constraint_calendar_recurrence_month_day
+NEW ir.model.constraint: calendar.constraint_calendar_filters_user_id_partner_id_unique
 NEW ir.ui.menu: calendar.calendar_menu_config
 NEW ir.ui.menu: calendar.calendar_submenu_reminders
 NEW ir.ui.view: calendar.res_partner_kanban_view
@@ -83,3 +69,13 @@ DEL ir.ui.view: calendar.assets_backend
 DEL ir.ui.view: calendar.qunit_suite
 NEW mail.template: calendar.calendar_template_meeting_update (noupdate)
 # NOTHING TO DO
+
+ir.model.constraint: calendar.constraint_calendar_recurrence_month_day (changed definition: is now 'check(
+rrule_type != 'monthly' or month_by != 'day' or day >= 1 and day <= 31 or
+weekday in('mon','tue','wed','thu','fri','sat','sun') and byday in('1','2','3','4','-1'))' ('check(
+rrule_type != 'monthly' or month_by != 'day' or day >= 1 and day <= 31 or
+weekday in('mo','tu','we','th','fr','sa','su') and byday in('1','2','3','4','-1'))'))
+# DONE: pre-migration: deleted in order to let odoo add it again directly with the new definition
+
+DEL ir.model.constraint: calendar.constraint_calendar_contacts_user_id_partner_id_unique
+# DONE: pre-migration: deleted safely

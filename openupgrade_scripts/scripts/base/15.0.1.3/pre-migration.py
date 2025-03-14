@@ -87,15 +87,17 @@ def migrate(cr, version):
     # Perform module renames and merges
     openupgrade.update_module_names(cr, renamed_modules.items())
     openupgrade.update_module_names(cr, merged_modules.items(), merge_modules=True)
-    update_uninstallable_modules_state(cr)
 
     openupgrade.rename_xmlids(cr, rename_xmlids_l10n_ec)
     openupgrade.rename_xmlids(cr, rename_xmlids_mail)
 
+    openupgrade.clean_transient_models(cr)
     openupgrade.convert_field_to_html(
         cr, "res_company", "report_footer", "report_footer"
     )
     openupgrade.convert_field_to_html(
         cr, "res_company", "report_header", "report_header"
     )
-    openupgrade.convert_field_to_html(cr, "res_partner", "comment", "comment")
+    openupgrade.convert_field_to_html(
+        cr, "res_partner", "comment", "comment", verbose=False
+    )

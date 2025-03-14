@@ -15,5 +15,5 @@ NEW ir.ui.view: website_payment.s_donation
 NEW ir.ui.view: website_payment.s_donation_button
 NEW ir.ui.view: website_payment.s_donation_options
 NEW ir.ui.view: website_payment.snippets
-NEW mail.template: website_payment.mail_template_donation
+NEW mail.template: website_payment.mail_template_donation (noupdate)
 # NOTHING TO DO

@@ -2,4 +2,4 @@
 ---Fields in module 'website_mail'---
 ---XML records in module 'website_mail'---
 DEL ir.ui.view: website_mail.head
-# NOTHING TO DO: noupdate="0" records
+# NOTING TO DO: Mange by ORM

@@ -5,4 +5,4 @@ NEW ir.ui.view: website_hr_recruitment.hr_recruitment_source_kanban_inherit_webs
 DEL ir.ui.view: website_hr_recruitment.assets_frontend
 DEL ir.ui.view: website_hr_recruitment.assets_tests
 DEL ir.ui.view: website_hr_recruitment.website_hr_recuitment_assets_editor
-# NOTHING TO DO: noupdate="0" records
+# NOTHING TO DO

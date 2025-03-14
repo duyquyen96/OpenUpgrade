@@ -11,14 +11,16 @@ payment_paypal / payment.acquirer         / provider (False)              : sele
 
 payment_paypal / payment.transaction      / paypal_txn_type (char)        : DEL
 payment_paypal / payment.transaction      / paypal_type (char)            : NEW
-# Done: pre-migration, renamed field
+# DONE: pre-migration: renamed field
 
 ---XML records in module 'payment_paypal'---
-NEW account.payment.method: payment_paypal.payment_method_paypal
+NEW account.payment.method: payment_paypal.payment_method_paypal (noupdate)
 NEW ir.ui.view: payment_paypal.payment_acquirer_form
 NEW ir.ui.view: payment_paypal.payment_transaction_form
 NEW ir.ui.view: payment_paypal.redirect_form
 DEL ir.ui.view: payment_paypal.acquirer_form_paypal
-DEL ir.ui.view: payment_paypal.paypal_form
 DEL ir.ui.view: payment_paypal.transaction_form_paypal
 # NOTHING TO DO
+
+DEL ir.ui.view: payment_paypal.paypal_form (noupdate)
+# DONE: post-migration: deleted safely xmlid

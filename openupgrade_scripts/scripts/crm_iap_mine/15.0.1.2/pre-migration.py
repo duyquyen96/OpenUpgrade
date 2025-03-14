@@ -100,20 +100,21 @@ _xmlid_renames = [
     ("crm_iap_mine.crm_iap_lead_seniority_1", "crm_iap_mine.crm_iap_mine_seniority_1"),
     ("crm_iap_mine.crm_iap_lead_seniority_2", "crm_iap_mine.crm_iap_mine_seniority_2"),
     ("crm_iap_mine.crm_iap_lead_seniority_3", "crm_iap_mine.crm_iap_mine_seniority_3"),
+    (
+        "crm_iap_mine.seq_crm_iap_lead_mining_request",
+        "crm_iap_mine.ir_sequence_crm_iap_mine",
+    ),
 ]
 
 
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.rename_xmlids(env.cr, _xmlid_renames)
-    openupgrade.rename_fields(
-        env,
-        [
-            (
-                "crm.iap.lead.industry",
-                "crm_iap_lead_industry",
-                "reveal_id",
-                "reveal_ids",
-            ),
-        ],
+    openupgrade.rename_columns(
+        env.cr,
+        {
+            "crm_iap_lead_industry": [
+                ("reveal_id", "reveal_ids"),
+            ],
+        },
     )

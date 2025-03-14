@@ -1,6 +1,5 @@
 ---Models in module 'membership'---
 ---Fields in module 'membership'---
 ---XML records in module 'membership'---
-DEL ir.model.constraint: membership.constraint_product_template_membership_date_greater
 NEW ir.ui.view: membership.report_membership_view_tree
-# NOTHING TO DO: noupdate="0" records
+# NOTHING TO DO

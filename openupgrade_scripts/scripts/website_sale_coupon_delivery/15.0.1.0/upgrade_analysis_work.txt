@@ -2,4 +2,4 @@
 ---Fields in module 'website_sale_coupon_delivery'---
 ---XML records in module 'website_sale_coupon_delivery'---
 DEL ir.ui.view: website_sale_coupon_delivery.assets_frontend
-# NOTHING TO DO: noupdate="0" records
+# NOTHING TO DO

@@ -11,6 +11,5 @@ def migrate(env, version):
             "email_template_data_applicant_congratulations",
             "email_template_data_applicant_interest",
             "email_template_data_applicant_refuse",
-            "applicant_hired_template",
         ],
     )

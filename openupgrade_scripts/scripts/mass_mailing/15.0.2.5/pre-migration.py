@@ -25,9 +25,9 @@ def _map_mailing_mailing_reply_to_mode(env):
         env.cr,
         """
         UPDATE mailing_mailing
-        SET reply_to_mode = CASE reply_to_mode
-            WHEN 'thread' THEN 'update'
-            WHEN 'email' THEN 'new'
+        SET reply_to_mode = CASE
+            WHEN reply_to_mode = 'thread' THEN 'update'
+            WHEN reply_to_mode = 'email' THEN 'new'
         END
         WHERE reply_to_mode IN ('thread', 'email')
         """,
@@ -39,11 +39,11 @@ def _map_mailing_trace_failure_type(env):
         env.cr,
         """
         UPDATE mailing_trace
-        SET failure_type = CASE failure_type
-            WHEN 'SMTP' THEN 'mail_smtp'
-            WHEN 'RECIPIENT' THEN 'mail_email_invalid'
-            WHEN 'BOUNCE' THEN 'mail_email_invalid'
-            WHEN 'UNKNOWN' THEN 'unknown'
+        SET failure_type = CASE
+            WHEN failure_type = 'SMTP' THEN 'mail_smtp'
+            WHEN failure_type = 'RECIPIENT' THEN 'mail_email_invalid'
+            WHEN failure_type = 'BOUNCE' THEN 'mail_email_invalid'
+            WHEN failure_type = 'UNKNOWN' THEN 'unknown'
         END
         WHERE failure_type IN ('SMTP', 'RECIPIENT', 'BOUNCE', 'UNKNOWN')
         """,
@@ -62,25 +62,17 @@ def _map_mailing_trace_trace_status(env):
         env.cr,
         """
         UPDATE mailing_trace
-        SET trace_status = CASE state
-            WHEN 'outgoing' THEN 'outgoing'
-            WHEN 'exception' THEN 'error'
-            WHEN 'sent' THEN 'sent'
-            WHEN 'opened' THEN 'open'
-            WHEN 'replied' THEN 'reply'
-            WHEN 'bounced' THEN 'bounce'
-            WHEN 'ignored' THEN 'cancel'
+        SET trace_status = CASE
+            WHEN state = 'outgoing' THEN 'outgoing'
+            WHEN state = 'exception' THEN 'error'
+            WHEN state = 'sent' THEN 'sent'
+            WHEN state = 'opened' THEN 'open'
+            WHEN state = 'replied' THEN 'reply'
+            WHEN state = 'bounced' THEN 'bounce'
+            WHEN state = 'ignored' THEN 'cancel'
         END
-        WHERE state IN
-            (
-                'outgoing',
-                'exception',
-                'sent',
-                'opened',
-                'replied',
-                'bounced',
-                'ignored')
-        """,
+        WHERE state IN ('outgoing', 'exception', 'sent', 'opened',
+            'replied', 'bounced', 'ignored')""",
     )
 
 
@@ -97,15 +89,14 @@ def _fill_mailing_mailing_schedule_type(env):
         """
         UPDATE mailing_mailing
         SET schedule_type = CASE
-                WHEN  schedule_date IS NOT NULL THEN 'scheduled'
-                ELSE 'now'
-        END
-        """,
+            WHEN  schedule_date IS NOT NULL THEN 'scheduled'
+            ELSE 'now'
+        END""",
     )
 
 
 def _delete_invalid_records_mailing_trace(env):
-    # Delete invalidata which trigger issue due to the new constaint
+    # Delete invalid data which trigger issue due to the new constraint
     # model: now required
     # res_id: now required
     openupgrade.logged_query(
@@ -117,12 +108,34 @@ def _delete_invalid_records_mailing_trace(env):
     )
 
 
-def _compute_ab_testing_total_pc(env):
+def _compute_ab_testing_fields(env):
+    # due to new constraint
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE mailing_mailing mm
+        SET ab_testing_pc = 100
+        WHERE ab_testing_pc > 100""",
+    )
+    # fill ab_testing_winner_selection
     openupgrade.logged_query(
         env.cr,
         """
         ALTER TABLE utm_campaign
-        ADD COLUMN IF NOT EXISTS ab_testing_total_pc int
+        ADD COLUMN IF NOT EXISTS ab_testing_winner_selection varchar""",
+    )
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE utm_campaign
+        SET ab_testing_winner_selection = 'manual'""",
+    )
+    # fill ab_testing_total_pc
+    openupgrade.logged_query(
+        env.cr,
+        """
+        ALTER TABLE utm_campaign
+        ADD COLUMN IF NOT EXISTS ab_testing_total_pc integer
         """,
     )
     openupgrade.logged_query(
@@ -133,8 +146,22 @@ def _compute_ab_testing_total_pc(env):
             SELECT SUM(mm.ab_testing_pc)
             FROM mailing_mailing AS mm
             WHERE mm.ab_testing_enabled = True AND uc.id = mm.campaign_id
-        )
+        )""",
+    )
+    # fill ab_testing_completed
+    openupgrade.logged_query(
+        env.cr,
+        """
+        ALTER TABLE utm_campaign
+        ADD COLUMN IF NOT EXISTS ab_testing_completed bool
         """,
+    )
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE utm_campaign uc
+        SET ab_testing_completed = TRUE
+        WHERE ab_testing_total_pc >= 100""",
     )
 
 
@@ -146,4 +173,7 @@ def migrate(env, version):
     _map_mailing_trace_trace_status(env)
     _delete_invalid_records_mailing_trace(env)
     _fill_mailing_mailing_schedule_type(env)
-    _compute_ab_testing_total_pc(env)
+    _compute_ab_testing_fields(env)
+    openupgrade.set_xml_ids_noupdate_value(
+        env, "mass_mailing", ["mass_mailing_kpi_link_trackers"], False
+    )

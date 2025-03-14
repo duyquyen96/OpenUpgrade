@@ -2,7 +2,8 @@
 ---Fields in module 'portal'---
 portal       / adyen.account            / website_message_ids (one2many): DEL relation: mail.message
 portal       / crm.team.member          / website_message_ids (one2many): NEW relation: mail.message
-portal       / uom.category             / website_message_ids (one2many): NEW relation: mail.message
+portal       / mail.test.lang           / website_message_ids (one2many): NEW relation: mail.message
+portal       / mail.test.track.monetary / website_message_ids (one2many): NEW relation: mail.message
 # NOTHING TO DO
 
 ---XML records in module 'portal'---

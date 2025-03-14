@@ -5,4 +5,4 @@ NEW ir.ui.view: website_sale_product_configurator.configure_optional_products_we
 NEW ir.ui.view: website_sale_product_configurator.product_quantity_config_website
 DEL ir.ui.view: website_sale_product_configurator.assets_frontend
 DEL ir.ui.view: website_sale_product_configurator.assets_tests
-# NOTHING TO DO: noupdate="0" records
+# NOTHING TO DO

@@ -3,4 +3,4 @@
 ---XML records in module 'base_iban'---
 DEL ir.ui.view: base_iban.assets_backend
 DEL ir.ui.view: base_iban.qunit_suite
-# NOTHING TO DO: handled by ORM
+# Nothing to do : view deleted, due to qweb import management refactoring.
