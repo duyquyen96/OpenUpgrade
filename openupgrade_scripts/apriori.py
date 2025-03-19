@@ -28,6 +28,8 @@ renamed_modules = {
     "account_statement_import_txt_xlsx": "account_statement_import_sheet_file",
     # OCA/crm
     "crm_project": "crm_lead_to_task",
+    # OCA/commission
+    "sale_commission_delegated_partner": "commission_delegated_partner",
     # OCA/knowledge
     "knowledge": "document_knowledge",
     # OCA/multi-company
