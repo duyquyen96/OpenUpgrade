@@ -3,23 +3,13 @@
 from openupgradelib import openupgrade
 
 
-def _ir_act_server_update_base_automation_id(env):
-    openupgrade.logged_query(
-        env.cr,
-        """
-        ALTER TABLE ir_act_server
-            ADD COLUMN IF NOT EXISTS base_automation_id INTEGER;
-        """,
-    )
-    openupgrade.logged_query(
-        env.cr,
-        """
-        UPDATE ir_act_server ias
-            SET base_automation_id = ba.id
-        FROM base_automation ba
-        WHERE ba.action_server_id = ias.id
-        """,
-    )
+def _base_automation_create_compute_fields(env):
+    _new_columns = [
+        ("base.automation", "trg_field_ref", "many2one_reference"),
+        ("base.automation", "trg_selection_field_id", "many2one"),
+    ]
+
+    openupgrade.add_columns(env, _new_columns)
 
 
 def _base_automation_sync_from_ir_act_server(env):
@@ -45,5 +35,5 @@ def _base_automation_sync_from_ir_act_server(env):
 
 @openupgrade.migrate()
 def migrate(env, version):
-    _ir_act_server_update_base_automation_id(env)
+    _base_automation_create_compute_fields(env)
     _base_automation_sync_from_ir_act_server(env)

@@ -389,7 +389,6 @@ def _account_tax_group_migration(env):
         SELECT tax_group_id, array_agg(DISTINCT(company_id))
             FROM account_tax
         GROUP BY tax_group_id
-        HAVING COUNT(DISTINCT company_id) > 1
         """
     )
 
@@ -403,8 +402,13 @@ def _account_tax_group_migration(env):
             limit=1,
         )
         tax_group_name = imd.name
-        imd.write({"name": f"{first_company_id}_{imd.name}"})
-
+        imd.write(
+            {
+                "name": f"{first_company_id}_{imd.name}",
+                "noupdate": True,
+                "module": "account",
+            }
+        )
         for company_id in company_ids:
             if company_id == first_company_id:
                 continue
@@ -504,7 +508,7 @@ def _map_chart_template_id_to_chart_template(
     `l10n_` prefix removed (usually the country's iso code)
     """
     env.cr.execute(
-        f"""SELECT m.id, CONCAT(imd.module, '.', imd.name)
+        f"""SELECT m.{coa_m2o}, CONCAT(imd.module, '.', imd.name)
             FROM {model_table} m
                 JOIN ir_model_data imd
                     ON imd.model='account.chart.template'

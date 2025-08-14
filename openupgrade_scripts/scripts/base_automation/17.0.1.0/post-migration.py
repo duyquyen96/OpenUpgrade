@@ -3,16 +3,6 @@
 from openupgradelib import openupgrade
 
 
-def _ir_act_server_update_name_if_base_automation(env):
-    act_servers = (
-        env["ir.actions.server"]
-        .with_context(active_test=False)
-        .search([("base_automation_id", "!=", False)])
-    )
-    if act_servers:
-        act_servers._compute_name()
-
-
 def _base_automation_update_trigger_fields_ids_if_null(env):
     """
     Need to update the trigger_fields_ids if Null for 'on_create_or_write'
@@ -58,22 +48,26 @@ def _ir_ui_view_remove_inherit_id_from_automation_form(env):
         view.inherit_id = False
 
 
-def _base_automation_update_deprecate_trigger(env):
-    openupgrade.logged_query(
+def _ir_act_server_update_base_automation_id(env):
+    openupgrade.m2o_to_x2m(
         env.cr,
-        """
-        UPDATE base_automation
-            SET trigger = 'on_create_or_write'
-        WHERE trigger IN ('on_create', 'on_write')
-        """,
+        env["base.automation"],
+        "base_automation",
+        "action_server_ids",
+        "action_server_id",
     )
+
+
+def _base_automation_rotate_webhook_uuid(env):
+    env["base.automation"].with_context(active_test=False).search(
+        []
+    ).action_rotate_webhook_uuid()
 
 
 @openupgrade.migrate()
 def migrate(env, version):
     openupgrade.load_data(env, "base_automation", "17.0.1.0/noupdate_changes.xml")
-    _ir_act_server_update_name_if_base_automation(env)
     _base_automation_update_trigger_fields_ids_if_null(env)
-    # Need to update deprecated trigger after add trigger field for 'on_create' trigger
-    _base_automation_update_deprecate_trigger(env)
     _ir_ui_view_remove_inherit_id_from_automation_form(env)
+    _ir_act_server_update_base_automation_id(env)
+    _base_automation_rotate_webhook_uuid(env)

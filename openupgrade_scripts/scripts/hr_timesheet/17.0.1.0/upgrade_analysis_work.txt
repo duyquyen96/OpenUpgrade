@@ -4,17 +4,19 @@ new model hr.employee.delete.wizard [transient]
 
 ---Fields in module 'hr_timesheet'---
 hr_timesheet / account.analytic.line    / ancestor_task_id (many2one)   : DEL relation: project.task
+# NOTHING TO DO: Removed field
+
 hr_timesheet / account.analytic.line    / parent_task_id (many2one)     : NEW relation: project.task, isrelated: related, stored
-# TODO pre-migration: rename field
+# NOTHING TO DO: ORM already fills it efficiently being a 2 level depth related field
 
 hr_timesheet / project.project          / timesheet_encode_uom_id (many2one): not related anymore
 hr_timesheet / project.project          / timesheet_encode_uom_id (many2one): now a function
-# NOTHING TO DO: no store field
+# NOTHING TO DO: non stored field
 
 hr_timesheet / project.update           / allocated_time (integer)      : NEW
 hr_timesheet / project.update           / timesheet_time (integer)      : NEW
 hr_timesheet / project.update           / uom_id (many2one)             : NEW relation: uom.uom
-# DONE post-migration: fill value
+# DONE: post-migration: fill historical values with the aproximation of current data (there can be differences if in the moment of creating the update, the allocated hours or the timesheets were not the same as today)
 
 ---XML records in module 'hr_timesheet'---
 DEL ir.actions.act_window.view: hr_timesheet.timesheet_action_view_from_employee_list
@@ -32,4 +34,4 @@ DEL ir.ui.view: hr_timesheet.rating_rating_view_search_project_inherited
 DEL ir.ui.view: hr_timesheet.report_project_task_user_view_search
 DEL ir.ui.view: hr_timesheet.report_project_task_user_view_tree
 DEL ir.ui.view: hr_timesheet.view_task_search_form_hr_extended
-# NOTHING TO DO: noupdate records
+# NOTHING TO DO: noupdate=0 records

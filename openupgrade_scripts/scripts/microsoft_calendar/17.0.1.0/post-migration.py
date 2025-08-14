@@ -1,30 +1,34 @@
-# Copyright 2024 Viindoo Technology Joint Stock Company (Viindoo)
+# Copyright 2025 Tecnativa - Carlos Lopez
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
-
 from openupgradelib import openupgrade
 
 
-def _fill_res_users_microsoft_calendar_account_id(env):
-    env.cr.execute(
+def _fill_microsoft_calendar_credentials_res_users(env):
+    openupgrade.logged_query(
+        env.cr,
         """
-        SELECT id, microsoft_calendar_sync_token, microsoft_synchronization_stopped
+        INSERT INTO microsoft_calendar_credentials (
+            create_uid, write_uid, create_date, write_date,
+            calendar_sync_token, synchronization_stopped
+        )
+        SELECT id, id, create_date, write_date,
+            microsoft_calendar_sync_token, microsoft_synchronization_stopped
         FROM res_users
         WHERE microsoft_calendar_sync_token IS NOT NULL
-        """
+        """,
     )
-    vals_list = []
-    for row in env.cr.fetchall():
-        vals_list.append(
-            {
-                "calendar_sync_token": row[1],
-                "synchronization_stopped": row[2],
-                "user_ids": [(6, 0, [row[0]])],
-            }
-        )
-    if vals_list:
-        env["microsoft.calendar.credentials"].create(vals_list)
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE res_users ru
+        SET microsoft_calendar_account_id = mc.id
+        FROM microsoft_calendar_credentials mc
+        WHERE mc.calendar_sync_token = ru.microsoft_calendar_sync_token
+            AND ru.microsoft_calendar_account_id IS NULL
+        """,
+    )
 
 
 @openupgrade.migrate()
-def migrate(env, version):
-    _fill_res_users_microsoft_calendar_account_id(env)
+def migrate(env, version=None):
+    _fill_microsoft_calendar_credentials_res_users(env)
