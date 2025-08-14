@@ -25,7 +25,7 @@ obsolete model base_import.tests.models.o2m [module base_import]
 obsolete model base_import.tests.models.o2m.child [module base_import]
 obsolete model base_import.tests.models.preview [module base_import]
 obsolete model hr.attendance.report [module hr_attendance]
-obsolete model hr.leave.stress.day [module hr_holidays]
+obsolete model hr.leave.stress.day (renamed to hr.leave.mandatory.day) [module hr_holidays]
 obsolete model hr.plan [module hr]
 obsolete model hr.plan.activity.type [module hr]
 obsolete model hr.plan.wizard [module hr]
@@ -77,7 +77,7 @@ new model homework.location.wizard [module hr_homeworking]
 new model hr.employee.cv.wizard [module hr_skills]
 new model hr.employee.delete.wizard [module hr_timesheet]
 new model hr.employee.location [module hr_homeworking]
-new model hr.leave.mandatory.day [module hr_holidays]
+new model hr.leave.mandatory.day (renamed from hr.leave.stress.day) [module hr_holidays]
 new model html.field.history.mixin [module web_editor]
 new model iap.account.info [module iap]
 new model ir.model.inherit [module base]
@@ -141,13 +141,13 @@ new model stock.forecasted_product_template [module stock]
 new model stock.quant.relocate [module stock]
 new model website.controller.page [module website]
 ---Fields in module 'general'---
-# 12228 fields matched,
-# Direct match: 12130
-# Found in other module: 98
+# 12237 fields matched,
+# Direct match: 12141
+# Found in other module: 96
 # Found with different type: 0
-# In obsolete models: 398
-# New columns: 1915
-# Not matched: 1453
+# In obsolete models: 388
+# New columns: 1919
+# Not matched: 1444
 ---XML records in module 'general'---
 ERROR: module not in list of installed modules:
 ---Models in module 'l10n_it_edi_pa'---
@@ -619,139 +619,3 @@ ERROR: module not in list of installed modules:
 ---Fields in module 'l10n_pl_sale_stock'---
 ---XML records in module 'l10n_pl_sale_stock'---
 ---nothing has changed in this module--
-ERROR: module not in list of installed modules:
----Models in module 'loyalty_delivery'---
----Fields in module 'loyalty_delivery'---
-loyalty_delivery / loyalty.reward           / reward_type (False)           : module is now 'sale_loyalty_delivery' ('loyalty_delivery')
----XML records in module 'loyalty_delivery'---
-DEL ir.ui.view: loyalty_delivery.loyalty_reward_view_form_inherit_loyalty_delivery
-DEL ir.ui.view: loyalty_delivery.loyalty_reward_view_kanban_inherit_loyalty_delivery
-ERROR: module not in list of installed modules:
----Models in module 'note'---
-obsolete model note.note
-obsolete model note.stage
-obsolete model note.tag
----Fields in module 'note'---
-note         / mail.activity            / note_id (many2one)            : DEL relation: note.note
-note         / mail.activity.type       / category (False)              : module is now 'project_todo' ('note')
-note         / note.note                / activity_ids (one2many)       : DEL relation: mail.activity
-note         / note.note                / color (integer)               : DEL
-note         / note.note                / company_id (many2one)         : DEL relation: res.company
-note         / note.note                / date_done (date)              : DEL
-note         / note.note                / memo (html)                   : DEL
-note         / note.note                / message_follower_ids (one2many): DEL relation: mail.followers
-note         / note.note                / message_ids (one2many)        : DEL relation: mail.message
-note         / note.note                / message_main_attachment_id (many2one): DEL relation: ir.attachment
-note         / note.note                / name (text)                   : DEL
-note         / note.note                / open (boolean)                : DEL
-note         / note.note                / sequence (integer)            : DEL
-note         / note.note                / stage_ids (many2many)         : DEL relation: note.stage
-note         / note.note                / tag_ids (many2many)           : DEL relation: note.tag
-note         / note.note                / user_id (many2one)            : DEL relation: res.users
-note         / note.stage               / fold (boolean)                : DEL
-note         / note.stage               / name (char)                   : DEL required
-note         / note.stage               / sequence (integer)            : DEL
-note         / note.stage               / user_id (many2one)            : DEL relation: res.users, required
-note         / note.tag                 / color (integer)               : DEL
-note         / note.tag                 / name (char)                   : DEL required
----XML records in module 'note'---
-DEL ir.actions.act_window: note.action_note_note
-DEL ir.actions.act_window: note.action_note_stage
-DEL ir.actions.act_window: note.note_tag_action
-DEL ir.model.access: note.access_note_note
-DEL ir.model.access: note.access_note_stage
-DEL ir.model.access: note.access_note_tag
-DEL ir.model.constraint: note.constraint_note_tag_name_uniq
-DEL ir.rule: note.ir_rule_note_note_multi_company (noupdate)
-DEL ir.rule: note.note_note_create_unlink_global (noupdate)
-DEL ir.rule: note.note_note_rule_global (noupdate)
-DEL ir.rule: note.note_stage_rule_global (noupdate)
-DEL ir.ui.menu: note.menu_note_configuration
-DEL ir.ui.menu: note.menu_note_notes
-DEL ir.ui.menu: note.menu_notes_stage
-DEL ir.ui.menu: note.notes_tag_menu
-DEL ir.ui.view: note.note_tag_view_form
-DEL ir.ui.view: note.note_tag_view_tree
-DEL ir.ui.view: note.view_note_note_filter
-DEL ir.ui.view: note.view_note_note_form
-DEL ir.ui.view: note.view_note_note_kanban
-DEL ir.ui.view: note.view_note_note_tree
-DEL ir.ui.view: note.view_note_stage_form
-DEL ir.ui.view: note.view_note_stage_tree
-DEL mail.activity.type: note.mail_activity_data_reminder [renamed to project_todo module] (noupdate)
-DEL note.stage: note.note_stage_00
-DEL note.stage: note.note_stage_01
-DEL note.stage: note.note_stage_02
-DEL note.stage: note.note_stage_03
-ERROR: module not in list of installed modules:
----Models in module 'pos_cache'---
-obsolete model pos.cache
----Fields in module 'pos_cache'---
-pos_cache    / pos.cache                / cache (binary)                : DEL attachment: True
-pos_cache    / pos.cache                / compute_user_id (many2one)    : DEL relation: res.users, required
-pos_cache    / pos.cache                / config_id (many2one)          : DEL relation: pos.config, required
-pos_cache    / pos.cache                / product_domain (text)         : DEL required
-pos_cache    / pos.cache                / product_fields (text)         : DEL required
-pos_cache    / pos.config               / cache_ids (one2many)          : DEL relation: pos.cache
----XML records in module 'pos_cache'---
-DEL ir.cron: pos_cache.refresh_pos_cache_cron
-DEL ir.model.access: pos_cache.access_pos_cache
-DEL ir.ui.view: pos_cache.view_pos_config_kanban
-ERROR: module not in list of installed modules:
----Models in module 'pos_daily_sales_reports'---
-model pos.daily.sales.reports.wizard (moved to point_of_sale) [column['model_type']]
----Fields in module 'pos_daily_sales_reports'---
-pos_daily_sales_reports / pos.session              / closing_notes (text)          : module is now 'point_of_sale' ('pos_daily_sales_reports')
----XML records in module 'pos_daily_sales_reports'---
-DEL ir.actions.act_window: pos_daily_sales_reports.action_report_pos_daily_sales_reports [renamed to point_of_sale module]
-DEL ir.model.access: pos_daily_sales_reports.access_pos_daily_sales_reports_wizard [renamed to point_of_sale module]
-DEL ir.ui.menu: pos_daily_sales_reports.menu_report_daily_details [renamed to point_of_sale module]
-DEL ir.ui.view: pos_daily_sales_reports.pos_daily_report
-DEL ir.ui.view: pos_daily_sales_reports.view_pos_daily_sales_reports_wizard
-ERROR: module not in list of installed modules:
----Models in module 'pos_epson_printer_restaurant'---
----Fields in module 'pos_epson_printer_restaurant'---
-pos_epson_printer_restaurant / restaurant.printer       / epson_printer_ip (char)       : DEL
-pos_epson_printer_restaurant / restaurant.printer       / printer_type (False)          : DEL selection_keys: ['epson_epos', 'iot'], mode: modify
----XML records in module 'pos_epson_printer_restaurant'---
-DEL ir.ui.view: pos_epson_printer_restaurant.view_restaurant_printer_iot_form
-ERROR: module not in list of installed modules:
----Models in module 'purchase_price_diff'---
----Fields in module 'purchase_price_diff'---
-purchase_price_diff / product.category         / property_account_creditor_price_difference_categ (many2one): module is now 'purchase_stock' ('purchase_price_diff')
-purchase_price_diff / product.product          / property_account_creditor_price_difference (many2one): module is now 'purchase_stock' ('purchase_price_diff')
-purchase_price_diff / product.template         / property_account_creditor_price_difference (many2one): module is now 'purchase_stock' ('purchase_price_diff')
----XML records in module 'purchase_price_diff'---
-DEL ir.ui.view: purchase_price_diff.product_template_form_view
-DEL ir.ui.view: purchase_price_diff.view_category_property_form
-ERROR: module not in list of installed modules:
----Models in module 'sale_quotation_builder'---
----Fields in module 'sale_quotation_builder'---
-sale_quotation_builder / product.template         / quotation_only_description (html): DEL
-sale_quotation_builder / sale.order               / website_description (html)    : DEL
-sale_quotation_builder / sale.order.line          / website_description (html)    : DEL
-sale_quotation_builder / sale.order.option        / website_description (html)    : DEL
-sale_quotation_builder / sale.order.template      / website_description (html)    : DEL
-sale_quotation_builder / sale.order.template.line / website_description (html)    : DEL
-sale_quotation_builder / sale.order.template.option / website_description (html)    : DEL
----XML records in module 'sale_quotation_builder'---
-DEL ir.ui.view: sale_quotation_builder.brand_promotion
-DEL ir.ui.view: sale_quotation_builder.res_config_settings_view_form_inherit
-DEL ir.ui.view: sale_quotation_builder.sale_order_form_quote_design
-DEL ir.ui.view: sale_quotation_builder.sale_order_portal_content_inherit_sale_quotation_builder
-DEL ir.ui.view: sale_quotation_builder.sale_order_template_view_form_inherit_sale_quotation_builder
-DEL ir.ui.view: sale_quotation_builder.so_template
-DEL sale.order.template: sale_quotation_builder.sale_order_template_default (noupdate)
-ERROR: module not in list of installed modules:
----Models in module 'website_sale_digital'---
----Fields in module 'website_sale_digital'---
-website_sale_digital / ir.attachment            / product_downloadable (boolean): DEL
----XML records in module 'website_sale_digital'---
-DEL ir.ui.view: website_sale_digital.product_product_view_form_inherit_digital
-DEL ir.ui.view: website_sale_digital.product_template_view_form_inherit_digital
-DEL ir.ui.view: website_sale_digital.sale_order_portal_content_inherit_website_sale_digital
-ERROR: module not in list of installed modules:
----Models in module 'website_sale_stock_product_configurator'---
----Fields in module 'website_sale_stock_product_configurator'---
----XML records in module 'website_sale_stock_product_configurator'---
-DEL ir.ui.view: website_sale_stock_product_configurator.website_sale_stock_modal

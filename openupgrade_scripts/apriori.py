@@ -8,14 +8,15 @@ renamed_modules = {
     "note": "project_todo",
     "website_sale_delivery_mondialrelay": "website_sale_mondialrelay",
     # odoo/enterprise
+    # OCA/delivery-carrier
+    "delivery_carrier_customer_info": "partner_delivery_info",
+    # OCA/social
+    "mail_activity_unlink_log": "mail_activity_cancel_tracking",
     # Viindoo/tvtmaaddons
-    "to_website_recaptcha_signup": "viin_recaptcha_signup",
     "viin_mail_channel_privacy": "viin_discuss_channel_privacy",
     # Viindoo/customer-pecc3
     "viin_pecc3_project_template_document": "viin_pecc3_project_document",
     "viin_project_role_progress": "viin_pecc3_project_role_progress",
-    # OCA/social
-    "mail_activity_unlink_log": "mail_activity_cancel_tracking",
 }
 
 # Merged modules contain a mapping from old module names to other,
@@ -38,18 +39,26 @@ merged_modules = {
     "pos_daily_sales_reports": "point_of_sale",
     "pos_epson_printer_restaurant": "point_of_sale",
     "purchase_price_diff": "purchase_stock",
+    "spreadsheet_dashboard_sale_expense": "spreadsheet_dashboard_hr_expense",
     "web_kanban_gauge": "web",
     "website_event_crm_questions": "website_event_crm",
     "website_event_questions": "website_event",
     "website_sale_delivery": "website_sale",
+    "website_sale_digital": "website_sale",
     "website_sale_loyalty_delivery": "website_sale_loyalty",
     "website_sale_stock_product_configurator": "website_sale_product_configurator",
     # OCA/account-invoicing
     "account_invoice_fiscal_position_update": "account",
+    # OCA/e-commerce
+    "website_sale_invoice_address": "website_sale",
     # OCA/hr-attendance
     "hr_attendance_geolocation": "hr_attendance",
+    # OCA/l10n-germany
+    "l10n_de_skr03_mis_reports": "l10n_de_mis_reports",
+    "l10n_de_skr04_mis_reports": "l10n_de_mis_reports",
     # OCA/l10n-spain
     "l10n_es_dua": "l10n_es",
+    "l10n_es_dua_sii": "l10n_es_aeat_sii_oca",
     "l10n_es_irnr": "l10n_es",
     "l10n_es_irnr_sii": "l10n_es_aeat_sii_oca",
     # OCA/maintenance
@@ -57,10 +66,19 @@ merged_modules = {
     "maintenance_plan": "maintenance",
     "maintenance_plan_activity": "maintenance",
     "maintenance_plan_employee": "maintenance",
+    # OCA/product-attribute
+    "product_catalog": "product",
+    "product_catalog_sale": "sale",
     # OCA/purchase-workflow
     "purchase_discount": "purchase",
+    # OCA/sale-promotion
+    "loyalty_initial_date_validity": "loyalty",
+    "sale_loyalty_initial_date_validity": "sale_loyalty",
+    # OCA/sale-reporting
+    "sale_report_country_state": "sale",
     # OCA/social
     "mail_activity_plan": "mail",
+    "mass_mailing_custom_unsubscribe_event": "mass_mailing",
     # OCA/stock-logistics-warehouse
     "stock_lot_filter_available": "stock",
     # OCA/web
@@ -74,6 +92,7 @@ merged_modules = {
     "to_mail_notif_and_email": "mail",
     "to_sale_loyalty_patch_1": "viin_loyalty_sale",
     "to_stock_report_common": "viin_stock",
+    "to_website_recaptcha_signup": "auth_signup",
     "viin_account_auto_transfer_patch_1": "viin_account_auto_transfer",
     "viin_affiliate_website_patch": "viin_affiliate_website",
     "viin_helpdesk_team_ticket_type": "viin_helpdesk",

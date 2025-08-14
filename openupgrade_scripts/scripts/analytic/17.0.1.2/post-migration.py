@@ -1,6 +1,6 @@
 # Copyright 2024 Viindoo Technology Joint Stock Company (Viindoo)
 # Copyright 2024 Hunki enterprises - Holger Brunn
-# Copyright 2024 Tecnativa - Pedro M. Baeza
+# Copyright 2024,2025 Tecnativa - Pedro M. Baeza
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 from openupgradelib import openupgrade
 
@@ -34,17 +34,12 @@ def _analytic_line_create_x_plan_column(env):
     and create dynamic field on analytic items using
     '_sync_plan_column' method
     """
-    project_plan = (
-        env.ref("analytic.analytic_plan_projects", raise_if_not_found=False)
-        or env["account.analytic.plan"]
+    project_plan = env["ir.config_parameter"].get_param("analytic.project_plan", False)
+    plans_to_create_fields = env["account.analytic.plan"].search(
+        [("id", "!=", int(project_plan))]
     )
-    if project_plan:
-        env["ir.config_parameter"].set_param(
-            "analytic.project_plan", str(project_plan.id)
-        )
-    plans_to_create_fields = env["account.analytic.plan"].search([])
-    (plans_to_create_fields - project_plan)._sync_plan_column()
-    for plan in plans_to_create_fields - project_plan:
+    plans_to_create_fields._sync_plan_column()
+    for plan in plans_to_create_fields:
         if plan.parent_id:
             continue
         column = plan._strict_column_name()
@@ -65,25 +60,18 @@ def _analytic_plan_update_applicability_into_property(env):
     in all companies as the company_id field was shifted from account.analytic.plan
     to account.analytic.applicability
     """
-    env.cr.execute(
-        """
-        SELECT id, default_applicability FROM account_analytic_plan
-        WHERE default_applicability != 'optional'
-        """
+    openupgrade.convert_to_company_dependent(
+        env,
+        "account.analytic.plan",
+        openupgrade.get_legacy_name("default_applicability"),
+        "default_applicability",
     )
-    values = dict(env.cr.fetchall())
-    for company in env["res.company"].search([]):
-        env["ir.property"].with_company(company)._set_multi(
-            "default_applicability",
-            "account.analytic.plan",
-            values,
-        )
 
 
 @openupgrade.migrate()
 def migrate(env, version):
     _adjust_analytic_plan_sequence(env)
-    openupgrade.load_data(env, "analytic", "17.0.1.1/noupdate_changes.xml")
+    openupgrade.load_data(env, "analytic", "17.0.1.2/noupdate_changes.xml")
     openupgrade.delete_records_safely_by_xml_id(
         env,
         _deleted_xml_records,

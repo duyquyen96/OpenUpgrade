@@ -1,44 +1,27 @@
-from collections import defaultdict
-
+# Copyright 2024 Viindoo Technology Joint Stock Company (Viindoo)
+# Copyright 2025 Tecnativa - Pedro M. Baeza
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 from openupgradelib import openupgrade
 
 
 def _project_update_fill_timesheet(env):
-    updates = env["project.update"].with_context(active_test=False).search([])
-    timesheets_read_group = env["account.analytic.line"]._read_group(
-        [
-            (
-                "project_id",
-                "in",
-                env["project.project"].with_context(active_test=False).search([]).ids,
-            )
-        ],
-        ["project_id", "product_uom_id", "date:day"],
-        ["unit_amount:sum"],
-    )
-    timesheet_time_dict = defaultdict(list)
-    for project, product_uom, date, unit_amount_sum in timesheets_read_group:
-        timesheet_time_dict[project.id].append((product_uom, date, unit_amount_sum))
-    for update in updates:
+    """Fill existing project updates with the theoretical information about the number
+    of allocated and spent hours. It may be different from the ones existing on the
+    moment the project update was done if later modifications changed them.
+    """
+    uom_hour = env.ref("uom.product_uom_hour")
+    for update in env["project.update"].with_context(active_test=False).search([]):
         project = update.project_id
-        encode_uom = project.company_id.timesheet_encode_uom_id
-        if not encode_uom:
-            continue
-
-        total_time = 0.0
-        for product_uom, date, unit_amount in timesheet_time_dict[project.id]:
-            if date > update.date:
-                continue
-            factor = (product_uom or project.timesheet_encode_uom_id).factor_inv
-            total_time += unit_amount * (1.0 if project.encode_uom_in_days else factor)
-        total_time *= project.timesheet_encode_uom_id.factor
-
-        ratio = env.ref("uom.product_uom_hour").ratio / encode_uom.ratio
+        group = env["account.analytic.line"]._read_group(
+            [("project_id", "=", project.id), ("date", "<=", update.date)],
+            [],
+            ["unit_amount:sum"],
+        )[0]
         update.write(
             {
-                "uom_id": encode_uom,
-                "allocated_time": round(project.allocated_hours / ratio),
-                "timesheet_time": round(total_time / ratio),
+                "uom_id": uom_hour.id,
+                "allocated_time": round(project.allocated_hours),
+                "timesheet_time": round(group[0]),
             }
         )
 

@@ -8,4 +8,4 @@ NEW ir.ui.view: project_account.project_task_form_view_account_inherit
 NEW ir.ui.view: project_account.project_task_tree_view_account_inherit
 NEW ir.ui.view: project_account.project_view_account_analytic_line_graph
 NEW ir.ui.view: project_account.project_view_account_analytic_line_pivot
-# NOTHING TO DO
+NOTHING TO DO: new module

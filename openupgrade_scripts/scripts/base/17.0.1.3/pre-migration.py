@@ -157,9 +157,26 @@ def _fill_empty_country_codes(cr):
     openupgrade.logged_query(
         cr,
         """
-        UPDATE res_country
-        SET code = 'OU' || id::VARCHAR
-        WHERE code IS NULL
+        WITH dummy_codes AS (
+            SELECT LPAD(i::text, 2, '0') AS code
+            FROM generate_series(0, 99) AS i
+        ),
+        available_codes AS (
+            SELECT dc.code, ROW_NUMBER() OVER () AS rn
+            FROM dummy_codes dc
+            LEFT JOIN res_country rc ON rc.code = dc.code
+            WHERE rc.code IS NULL
+        ),
+        null_countries AS (
+            SELECT id, ROW_NUMBER() OVER () AS rn
+            FROM res_country
+            WHERE code IS NULL
+        )
+        UPDATE res_country AS rc
+        SET code = ac.code
+        FROM available_codes ac
+        JOIN null_countries nc ON nc.rn = ac.rn
+        WHERE rc.id = nc.id
         """,
     )
 
