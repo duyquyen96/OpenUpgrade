@@ -136,6 +136,7 @@ merged_modules = {
     "viin_mail_ice_server_data": "web_editor",
     "viin_product_recurring": "viin_sale_recurring",
     "viin_stock_patch1": "viin_stock",
+    "viin_subscription": "viin_sale_subscription",
     # Viindoo/branding
     "viin_brand_iap": "iap",
     "viin_brand_note": "project_todo",
