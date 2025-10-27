@@ -108,6 +108,7 @@ merged_modules = {
     "viin_account_auto_transfer_patch_1": "viin_account_auto_transfer",
     "viin_account_qr_code_emv": "account_qr_code_emv",
     "viin_affiliate_website_patch": "viin_affiliate_website",
+    "viin_analytic_tag": "viin_account",
     "viin_event_barcodes": "event",
     "viin_event_checkin": "event",
     "viin_event_checkin_crm": "event_crm",
